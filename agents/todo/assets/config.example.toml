@@ -1,0 +1,147 @@
+# Configuration for the daily TODO skill.
+#
+# This file, and nothing else, decides which subskills (connectors to your calendar,
+# mail, meeting notes, ...) run each morning. SKILL.md names none of them. To add a
+# source, add a [[subskills]] entry at the bottom; to stop using one, set
+# enabled = false or delete its entry.
+#
+# Every key is optional: a missing key takes the default shown here. A value of the
+# wrong type or an unknown choice makes `todo.py begin` stop and name the key. Unknown
+# keys are ignored with a warning, so a typo does not silently change behaviour.
+# Every key is explained in references/config.md in the skill directory.
+
+schema = 1
+
+[run]
+# "local" (this machine's zone) or an IANA name such as "America/New_York".
+timezone = "local"
+# The furthest any "since-last-run" window reaches back, e.g. after a holiday.
+max_lookback_days = 7
+# A run that has held the lock this long is assumed dead. Interactive sessions
+# are treated as dead after min(this, 15) minutes.
+lock_stale_minutes = 90
+
+[intake]
+# How findings from sources become tasks:
+#   "confirm-all"  everything goes to ## Proposed until you accept it
+#   "auto-high"    tasks explicitly assigned to you are added; the rest is proposed
+#   "auto-all"     everything is added, except low-confidence items (proposed)
+mode = "auto-high"
+# Proposals you ignore for this many days expire into ## Dismissed.
+proposal_ttl_days = 7
+# Rejected source items are remembered this long so they are not proposed again.
+dismissed_keep_days = 21
+
+[focus]
+# The most items in "Focus today".
+max_items = 5
+# An open task not mentioned in the log for this many run-days is asked about
+# ("keep, park or drop?"). Cannot usefully exceed history.log_keep_days.
+stale_after_days = 5
+# Tasks due within this many days are flagged for a priority check.
+due_soon_days = 3
+
+[history]
+# How many dated log entries are kept; older ones move to archive/.
+log_keep_days = 7
+# How many briefs (and their draft folders) are kept before moving to archive/.
+brief_keep_days = 7
+# How many pre-run backups of TODO.md and log.md are kept in .state/backups/.
+backup_keep = 14
+
+[automation]
+# "prepare": draft replies, agendas, lookups into drafts/ and the brief.
+# "off": do not prepare anything.
+mode = "prepare"
+# At most this many items are prepared per run.
+max_per_run = 5
+# Subskill actions allowed to run unattended, as "<subskill>.<action>", e.g.
+# ["gmail.create_draft"]. Actions that send, post, accept, share, pay or delete are
+# never run unattended, whatever is listed here.
+allow_actions = []
+
+[runner]
+# Used by scripts/schedule.py for the unattended morning run.
+agent = "claude"
+# Empty: the agent's default model.
+model = ""
+# Spending cap per run in US dollars; 0 means no cap.
+max_budget_usd = 0
+timeout_minutes = 30
+# Desktop notification when the brief is ready or the run failed.
+notify = true
+# After a failed run, wait this long and try once more.
+retry_delay_seconds = 600
+# Extra permission rules for the unattended run, in addition to the ones each
+# subskill declares in allowed_tools.
+extra_allowed_tools = []
+
+# ---------------------------------------------------------------------------
+# Subskills. One [[subskills]] block per source, in the order they should run.
+#
+#   name           required; lowercase letters, digits and hyphens
+#   enabled        true by default
+#   path           where the subskill lives; empty means <home>/subskills/<name>/
+#                  first, then the skill's built-in subskills/<name>/
+#   window         "since-last-run" (streams such as mail) or "rolling" (sources
+#                  that are edited after the fact, such as meeting notes)
+#   lookback_days  rolling windows only; default run.max_lookback_days
+#   max_items      the most items one run reports from this source
+#   allowed_tools  permission rules the unattended run needs for this source;
+#                  {skill}, {home} and {subskill_dir} are filled in
+#   [subskills.params]  settings for the subskill itself, passed through as written
+# ---------------------------------------------------------------------------
+
+[[subskills]]
+name = "local-notes"
+enabled = true
+window = "rolling"
+lookback_days = 7
+max_items = 15
+allowed_tools = ["Bash(python3 {subskill_dir}/scripts/scan.py *)"]
+
+[subskills.params]
+# Relative to the workspace unless absolute. Created empty by `todo.py init`.
+dir = "notes"
+glob = "**/*.md"
+# Names that mean "you" in your notes, so the subskill can tell your action items
+# from other people's. Fill this in.
+# owner_names = ["Jo Rivera", "jo@example.com"]
+
+# ---------------------------------------------------------------------------
+# Examples. These three connectors ship with the skill but have not been verified
+# against a live account: sign in to the connector, then test each one with
+# subskills/create-subskill/SKILL.md before relying on it.
+# ---------------------------------------------------------------------------
+
+# [[subskills]]
+# name = "google-calendar"
+# window = "since-last-run"
+# max_items = 20
+# allowed_tools = ["mcp__claude_ai_Google_Calendar"]
+#
+# [subskills.params]
+# lookahead_days = 7
+# skip_calendars = ["Holidays"]
+
+# [[subskills]]
+# name = "gmail"
+# window = "since-last-run"
+# max_items = 15
+# allowed_tools = ["mcp__claude_ai_Gmail"]
+#
+# [subskills.params]
+# owner_names = ["Jo Rivera", "jo@example.com"]
+# ignore_senders = ["noreply@", "notifications@"]
+
+# [[subskills]]
+# name = "gdocs-meeting-notes"
+# window = "rolling"
+# lookback_days = 7
+# max_items = 15
+# allowed_tools = ["mcp__claude_ai_Google_Drive"]
+#
+# [subskills.params]
+# folder = "Meeting notes"
+# name_contains = "sync"
+# owner_names = ["Jo Rivera", "jo@example.com"]

@@ -1,0 +1,8 @@
+# Ignore everything at the top level
+/*
+
+# Whitelist specific files or folders you want to track
+!/.gitignore
+!/README.md
+!/hypr/
+!/agents/

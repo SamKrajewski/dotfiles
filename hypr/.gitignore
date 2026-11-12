@@ -1,0 +1,24 @@
+*
+!.gitignore
+
+# Omarchy Config files (defaults not included in this repo)
+!autostart.conf
+!autostart.lua
+!bindings.conf
+!bindings.conf.bak
+!bindings.lua
+!envs.conf
+!hypridle.conf
+!hyprland.conf
+!hyprland.lua
+!hyprlock.conf
+!hyprpaper.conf
+!hyprsunset.conf
+!input.conf
+!input.lua
+!looknfeel.conf
+!looknfeel.lua
+!monitors.conf
+!monitors.lua
+!windows.conf
+!xdph.conf
