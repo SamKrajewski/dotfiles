@@ -6,3 +6,15 @@
 !/README.md
 !/hypr/
 !/agents/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+
+# Local / Google-internal skills, connectors, and SDK files
+/agents/skills/adding_ae_continuous_eval_queryset/
+/agents/skills/todo/references/scheduling-jetski.md
+/agents/skills/todo/subskills/gdocs-meeting-notes/
+/agents/skills/todo/subskills/gmail/
+/agents/skills/todo/subskills/google-calendar/
+/agents/extensions/todo-dash/sidecars/dash/preload.js

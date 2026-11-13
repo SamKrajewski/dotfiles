@@ -1,0 +1,13 @@
+# .review/flows.yaml — user flows for level 4 (browser) testing.
+# A flow runs when any changed file matches its paths. Steps are plain
+# instructions for the browser tool; expectations are what to assert.
+flows:
+  - id: signup
+    paths: ["src/auth/**", "web/pages/signup/**"]
+    steps:
+      - "open /signup"
+      - "enter an email and a password, submit"
+    expect:
+      - "redirects to /onboarding"
+      - "submit button visible without scrolling at 390x844"
+    sizes: ["390x844", "1440x900"]

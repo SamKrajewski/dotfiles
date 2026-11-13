@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TODO Dash</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/preload.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="top-row">
+      <div class="brand">
+        <span class="logo">☑</span>
+        <div>
+          <div class="title">TODO</div>
+          <div class="sub muted" id="date-line">…</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="btn ghost" id="btn-refresh" title="Reload from disk">↻</button>
+        <div class="menu">
+          <button class="btn ghost" id="btn-more" title="Actions">⋯</button>
+          <div class="menu-list hidden" id="more-menu"></div>
+        </div>
+      </div>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="banner hidden" id="banner"></div>
+    <nav class="tabs" id="tabs">
+      <button data-tab="today" class="active">Today</button>
+      <button data-tab="goals">Goals</button>
+      <button data-tab="chat">Chat <span class="dot hidden" id="chat-dot"></span></button>
+      <button data-tab="inbox">Inbox <span class="count" id="inbox-count"></span></button>
+      <button data-tab="history">History</button>
+      <button data-tab="docs">Docs</button>
+      <button data-tab="brief">Brief</button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="tab-today" class="tab active"></section>
+    <section id="tab-goals" class="tab"></section>
+    <section id="tab-chat" class="tab">
+      <div class="chat">
+        <div class="chat-bar">
+          <span class="muted" id="chat-status">No conversation yet</span>
+          <span class="spacer"></span>
+          <button class="btn ghost small ro" id="chat-open" title="Open this conversation in Jetski">Open in Jetski</button>
+          <button class="btn ghost small ro" id="chat-new" title="Start a fresh TODO conversation">New chat</button>
+        </div>
+        <div class="chat-log" id="chat-log"></div>
+        <div class="chat-attach hidden" id="chat-attach"></div>
+        <div class="chat-input">
+          <textarea id="chat-text" rows="2" placeholder="Talk to the agent about your list: “done with T12”, “what should I focus on this week?”, “add: call Dana by Friday”, “run the daily todo”…"></textarea>
+          <button class="btn" id="chat-send">Send</button>
+        </div>
+      </div>
+    </section>
+    <section id="tab-inbox" class="tab"></section>
+    <section id="tab-history" class="tab"></section>
+    <section id="tab-docs" class="tab"></section>
+    <section id="tab-brief" class="tab"></section>
+  </main>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title" id="modal-title"></div>
+        <button class="btn ghost" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

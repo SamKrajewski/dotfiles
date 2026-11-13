@@ -1,0 +1,54 @@
+# bug-hunt skill: per-repo configuration (.review/config.yaml)
+# Numbers are starting points, not findings from the talk. Tune them with the evals.
+
+default_branch: ""            # blank = detect (origin/HEAD, then main/master)
+
+project:
+  # script      - one-off scripts and throwaway tools; light reviews are allowed
+  # application - a real codebase that others work in; every change gets the standard pipeline
+  # production  - user-facing or revenue/safety-bearing code; every change gets the deep pipeline
+  kind: application
+
+limits:
+  max_findings: 8
+  max_context_files: 25
+  budget_usd: {light: 0.5, standard: 3, deep: 10}
+
+depth:
+  skip_globs: [".review/**", "**/*.lock", "**/package-lock.json", "**/yarn.lock", "**/pnpm-lock.yaml", "dist/**", "build/**", "vendor/**", "**/*.min.js", "**/*.snap", "**/*.pb.go", "**/*_pb2.py"]
+  deep_paths: ["**/auth/**", "**/billing/**", "**/payments/**", "**/migrations/**", "**/security/**"]
+  light_max_lines: 20
+  light_max_files: 2
+  deep_min_lines: 800
+  deep_min_files: 30
+
+models: {small: "", frontier: "", computer_use: ""}    # blank = the host agent's model
+
+inversion:
+  self_family: ""             # family of the agent running this skill: claude | gpt | gemini
+  author_override: ""         # force the author family for this repo (e.g. "claude" for a repo built by one agent)
+  registry: ""                # optional YAML/JSON mapping author email or login -> family
+  # Headless commands for a reviewer of another family. Use {prompt_file} and {out}; the
+  # command must write the JSON object described in references/output.md to {out}.
+  reviewers:
+    claude: ""                # e.g. claude -p "$(cat {prompt_file})" --output-format json > {out}
+    gpt: ""                   # e.g. codex exec --json "$(cat {prompt_file})" > {out}
+    gemini: ""
+
+context:
+  tickets: none               # none | github | jira | linear | buganizer (whatever connector exists)
+  docs: ["docs/", "adr/", "README.md"]
+  related_repos: []
+
+testing:
+  setup: ""                   # one command that prepares a clean checkout (install deps, build)
+  test: ""                    # runs the tests; may use {files} for changed files
+  start: ""                   # starts the app for level 3/4; must be safe to run in a sandbox
+  health_url: ""              # e.g. http://localhost:3000/healthz
+
+evals:
+  command: ""                 # headless review command; placeholders: {base} {head} {case_id} {out} {repo} {review_dir}
+  repeats: 3
+  line_tolerance: 3           # a finding matches an expected bug if its lines overlap within this many lines
+  timeout_seconds: 1800
+  checkout: auto              # auto | worktree | none

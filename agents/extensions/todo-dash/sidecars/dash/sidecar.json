@@ -1,0 +1,16 @@
+{
+  "command": "python3",
+  "args": ["-B", "-u", "server.py"],
+  "restart_policy": "always",
+  "supported_environments": ["cloudtop", "capsule"],
+  "display_name": "TODO Dash",
+  "description": "Goals, subgoal progress, priorities, proposals, history and documents for the daily todo skill (~/todo).",
+  "has_web_ui": true,
+  "ui_config": {
+    "display_name": "TODO Dash",
+    "views": [
+      { "path": "/", "entrypoint": "SIDECAR_UI_ENTRYPOINT_AUX_PANE", "title": "TODO" },
+      { "path": "/", "entrypoint": "SIDECAR_UI_ENTRYPOINT_SIDEBAR", "title": "TODO" }
+    ]
+  }
+}

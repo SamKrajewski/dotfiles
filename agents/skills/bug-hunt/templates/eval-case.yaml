@@ -1,0 +1,14 @@
+# .review/evals/cases/<id>/case.yaml
+id: 2025-03-double-charge
+kind: bug                     # bug | clean | synthetic
+base_sha: abc123
+head_sha: def456
+author_family: gpt            # if known; otherwise omit
+source: "incident INC-412 / fix commit 9f1e2d3"   # where this case came from
+intent: ""                    # optional: the ticket or PR text the reviewer should be given
+expected:                     # empty for kind: clean
+  - file: src/billing/charge.ts
+    lines: [88, 104]          # omit to accept any line in the file
+    class: async-race         # from references/bug-catalog.md or bug-catalog.local.md
+    accept_classes: [async-race, incomplete-change]   # optional: other classes that count as a catch
+    note: retry is not idempotent

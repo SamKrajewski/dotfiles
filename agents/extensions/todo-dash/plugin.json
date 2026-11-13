@@ -1,0 +1,12 @@
+{
+  "name": "todo-dash",
+  "displayName": "TODO Dash",
+  "version": "0.1.0",
+  "description": "Dashboard for the daily todo skill: mainline goals with subgoal progress, prioritised tasks, proposals to accept or reject, history, briefs, drafts and the documents your tasks point at. Edits go straight into ~/todo/TODO.md as your own edits; the agent's daily run picks them up.",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "Open TODO Dash and show me today's focus",
+    "Run my daily todo and refresh the brief",
+    "Help me triage the proposed items in my todo list"
+  ]
+}

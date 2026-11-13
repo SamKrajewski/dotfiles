@@ -1,0 +1,69 @@
+# Shared context — __PROJECT__
+
+You are one fresh-context agent in a build whose design is frozen. You know
+two things: your brief, and the files in this directory. That is deliberate.
+Everything you need is in them, and nothing else is yours to read. Your brief
+is the law for your task; this file says how this project is built.
+
+## Project
+
+__SUMMARY__
+
+<!-- 2–4 sentences: what the system is and what it is for, language and
+     runtime, the one or two facts every implementer needs. No contract
+     entries here: an agent's entries arrive in its brief. -->
+
+## Layout
+
+__LAYOUT__
+
+<!-- Directory map: where source, tests, configuration and build files live,
+     and which directories a task agent never touches (agents/, docs/, and
+     tests/ for code agents). -->
+
+## Conventions
+
+__CONVENTIONS__
+
+<!-- Error-handling pattern, logging, naming, module boundaries, style rules
+     beyond what the formatter enforces. "No new dependencies" is always
+     implied: the dependency list is law. -->
+
+## Commands
+
+| Purpose | Command |
+|---------|---------|
+| Format | `__FORMAT_CMD__` |
+| Lint | `__LINT_CMD__` |
+| Type check | `__TYPECHECK_CMD__` |
+| Run one test file | `__TEST_ONE_CMD__` |
+| Run everything | `__TEST_ALL_CMD__` |
+| Build | `__BUILD_CMD__` |
+
+## Rules for every task agent
+
+- Edit only the files your brief names, and in them only what it names. Never
+  edit a test, anything under `agents/`, or anything in this directory except
+  `progress.md`.
+- Do not open files your brief does not name. The signatures in your brief are
+  all you may depend on. If they are not enough, your task is under-specified:
+  stop and reply `blocked: <what is missing>`. Do not guess.
+- Do not change a signature or doc comment, add a dependency, or improve
+  neighbouring code.
+- Run your brief's verify commands before you reply. The orchestrator runs
+  them again; report exactly what passed and what did not.
+- Commits: __COMMIT_POLICY__
+
+## Progress log
+
+Read `progress.md` before you start. Lines beginning `HUMAN NOTE:` are steering
+from the user and override anything else there. When you finish, done or
+blocked, append:
+
+```
+## <ISO timestamp> · <task id> · <title>
+- Changed: <files>
+- Verified: <each command and its result>
+- Learnings: <specific, technical gotchas the next agent should know; or "none">
+---
+```
